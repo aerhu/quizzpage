@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+ 
+  <title>JavaScript Quiz App</title>
+</head>
+<body>
+
+  <div id="quiz-container">
+    <h1>JavaScript Quiz</h1>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="answer-buttons"></div>
+    </div>
+    <button id="prev-button">Previous</button>
+    <br><br>
+    <button id="next-button">Next</button>
+    <div id="progress"></div>
+    <div id="score"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What does HTML stand for?",
+        options: ["Hyper Text Markup Language", "Hyper Transfer Markup Language", "Hyper Tool Multi Language"],
+        answer: 0
+      },
+      {
+        question: "What does CSS stand for?",
+        options: ["Creative Style Sheets", "Computer Style Sheets", "Cascading Style Sheets"],
+        answer: 2
+      },
+     
+  {
+    question: "What is the symbol for jQuery?",
+    options: ["$", "#", "@", "&"],
+    answer: 0
+  },
+    
+    ];
+
+    const questionContainer = document.getElementById("question-container");
+    const questionElement = document.getElementById("question");
+    const answerButtons = document.getElementById("answer-buttons");
+    const prevButton = document.getElementById("prev-button");
+    const nextButton = document.getElementById("next-button");
+    const progress = document.getElementById("progress");
+    const score = document.getElementById("score");
+
+    let currentQuestionIndex = 0;
+    let userScore = 0;
+
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      questionElement.innerText = currentQuestion.question;
+      answerButtons.innerHTML = "";
+
+      const optionLabels = ["a", "b", "c"];
+
+      currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.innerText = `${optionLabels[index]}) ${option}`;
+        button.addEventListener("click", () => selectAnswer(index));
+        answerButtons.appendChild(button);
+      });
+
+      progress.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+      score.innerText = `Score: ${userScore}`;
+      prevButton.disabled = currentQuestionIndex === 0;
+      nextButton.disabled = true;
+    }
+
+    function selectAnswer(selectedIndex) {
+      const currentQuestion = questions[currentQuestionIndex];
+      if (selectedIndex === currentQuestion.answer) {
+        userScore++;
+      }
+      nextButton.disabled = false;
+    }
+
+    prevButton.addEventListener("click", () => {
+      currentQuestionIndex--;
+      displayQuestion();
+    });
+
+    nextButton.addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+      } else {
+        questionContainer.innerHTML = `<h2>Quiz Completed!</h2><p>Your score: ${userScore} out of ${questions.length}</p>`;
+      }
+    });
+
+    displayQuestion();
+  </script>
+</body>
+</html>
+
+
+    
+
+
